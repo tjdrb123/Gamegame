@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TrackerController : MonoBehaviour
@@ -8,7 +9,7 @@ public class TrackerController : MonoBehaviour
     private Transform target;
 
     [Header("추격 속도")]
-    [SerializeField][Range(1f, 4f)] private float moveSpeed = 3f;
+    [SerializeField][Range(1f, 9f)] private float moveSpeed = 6f;
 
     [Header("근접 거리")]
     [SerializeField][Range(0f, 3f)] private float contactDistance = 1f;
@@ -21,7 +22,7 @@ public class TrackerController : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         FollowTarget();
     }
@@ -40,11 +41,22 @@ public class TrackerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        follow = true;
+        if (collision.gameObject.tag == "Player")
+        {
+            follow = true;
+            Debug.Log("true");
+        }
+
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        follow = false;
+        if (collision.gameObject.tag == "Player")
+        {
+            follow = false;
+            Debug.Log("false");
+        }
+     
     }
 }
